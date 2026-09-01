@@ -1,0 +1,50 @@
+.iframe-embed,
+figure.iframe-embed {
+  display: block;
+  width: var(--iframe-width, 100%);
+  max-width: 100%;
+}
+
+.iframe-embed--align-left {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.iframe-embed--align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.iframe-embed--align-right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.iframe-embed--valign-top {
+  vertical-align: top;
+  align-self: flex-start;
+}
+
+.iframe-embed--valign-center {
+  vertical-align: middle;
+  align-self: center;
+}
+
+.iframe-embed--valign-bottom {
+  vertical-align: bottom;
+  align-self: flex-end;
+}
+
+.iframe-embed__frame {
+  height: var(--iframe-height, 560px);
+  overflow: hidden;
+}
+
+.iframe-embed iframe {
+  display: block;
+  width: calc(100% / var(--iframe-zoom, 0.6));
+  height: calc(100% / var(--iframe-zoom, 0.6));
+  transform: scale(var(--iframe-zoom, 0.6));
+  transform-origin: top left;
+  border: 0;
+}
