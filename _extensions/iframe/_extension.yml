@@ -1,5 +1,5 @@
-title: Iframe
-author: Beck Chan
+title: Quarto Iframe
+author: Beck Chan (https://github.com/beck-chan)
 version: 1.0.0
 quarto-required: ">=1.4.0"
 contributes:

@@ -7,17 +7,17 @@
 
   Attributes:
     url / src   required iframe source
-    zoom        scale of the inner page (default 60%). Accepts 75%, 0.75, or 75
+    zoom        scale of the inner page (default 100%). Accepts 75%, 0.75, or 75
     width       visible viewport width (default 100%)
     height      visible viewport height (default 560)
     loading     iframe loading attr (default lazy)
     title       caption shown under the iframe (optional; also used as the iframe title)
-    class       extra classes on the frame (pics is always applied)
+    class       extra classes on the frame via class="..." or {.iframe .your-class}
     align       horizontal position on the page (default center). left|center|right
     valign      vertical alignment in a flex/grid parent (default center). top|center|bottom
 ]]
 
-local DEFAULT_ZOOM = 0.6
+local DEFAULT_ZOOM = 1
 local DEFAULT_WIDTH = "100%"
 local DEFAULT_HEIGHT = "560px"
 
@@ -174,11 +174,9 @@ function Div(div)
     end
   end
 
-  local frame_classes = { "iframe-embed__chrome", "pics" }
+  local frame_classes = { "iframe-embed__chrome" }
   for _, class in ipairs(extra) do
-    if class ~= "pics" then
-      table.insert(frame_classes, class)
-    end
+    table.insert(frame_classes, class)
   end
 
   local id_attr = ""

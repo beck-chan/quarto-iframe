@@ -6,12 +6,34 @@ Embeds an iframe with a fenced div with options to include a caption under the i
 
 Requires Quarto `>= 1.4.0`.
 
-## Usage Examples
+## Install
+
+```bash
+quarto add beck-chan/quarto-iframe
+```
+
+## Usage
+
+Add the filter to the YAML frontmatter on a `.qmd` file or your top-level `_quarto.yml`:
+
+```yaml
+filters:
+  - iframe
+```
+
+### Examples
 
 Only `url` is required. `title` becomes the caption under the iframe:
 
 ```markdown
 ::: {.iframe url="https://example.com" title="Example site"}
+:::
+```
+
+Styled with a custom CSS class:
+
+```markdown
+::: {.iframe url="https://example.com" title="Example site" .border}
 :::
 ```
 
@@ -28,10 +50,10 @@ Override defaults when you need a different size, zoom, or alignment:
 |---|---|---|
 | `url` / `src` | Rrequired Input | Iframe source URL |
 | `title` | — | Caption under the frame and used as the iframe `title` |
-| `zoom` | `60%` | Also accepts `75` or `0.75` |
+| `zoom` | `100%` | Also accepts `75` or `0.75` |
 | `width` | `100%` | Visible viewport width |
 | `height` | `560` | Unitless numbers become `px` |
 | `align` | `center` | `left`, `center`, or `right` on the page |
 | `valign` | `center` | `top`, `center` or `middle` (valign), or `bottom` in a flex/grid parent |
 | `loading` | `lazy` | Iframe `loading` attribute |
-| `class` | `pics` | Extra style classes can be passed with `class="..."` or `{.iframe .your-class}` |
+| `class` | — | Add style classes with `class="..."` or `.custom-class` |

@@ -42,9 +42,9 @@ figure.iframe-embed {
 
 .iframe-embed iframe {
   display: block;
-  width: calc(100% / var(--iframe-zoom, 0.6));
-  height: calc(100% / var(--iframe-zoom, 0.6));
-  transform: scale(var(--iframe-zoom, 0.6));
+  width: calc(100% / var(--iframe-zoom, 1));
+  height: calc(100% / var(--iframe-zoom, 1));
+  transform: scale(var(--iframe-zoom, 1));
   transform-origin: top left;
   border: 0;
 }
