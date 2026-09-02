@@ -23,7 +23,7 @@ filters:
 
 ### Examples
 
-Only `url` is required. `title` becomes the caption under the iframe:
+Only `url` is required. `title` becomes the caption under the iframe. An SVG control in the bottom-left corner opens the source URL in a new window by default:
 
 ```markdown
 ::: {.iframe url="https://example.com" title="Example site"}
@@ -44,6 +44,13 @@ Override defaults when you need a different size, zoom, or alignment:
 :::
 ```
 
+Hide the open-in-new-window control:
+
+```markdown
+::: {.iframe url="https://example.com" title="Example site" new-window="false"}
+:::
+```
+
 ## Reference
 
 | Attribute | Default | Notes |
@@ -56,4 +63,5 @@ Override defaults when you need a different size, zoom, or alignment:
 | `align` | `center` | `left`, `center`, or `right` on the page |
 | `valign` | `center` | `top`, `center` or `middle` (valign), or `bottom` in a flex/grid parent |
 | `loading` | `lazy` | Iframe `loading` attribute |
+| `new-window` | `true` | SVG control in the bottom-left that opens the iframe URL in a new window. Set `false` / `off` / `no` to hide it |
 | `class` | — | Add style classes with `class="..."` or `.custom-class` |

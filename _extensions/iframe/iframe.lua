@@ -6,20 +6,31 @@
     :::
 
   Attributes:
-    url / src   required iframe source
-    zoom        scale of the inner page (default 100%). Accepts 75%, 0.75, or 75
-    width       visible viewport width (default 100%)
-    height      visible viewport height (default 560)
-    loading     iframe loading attr (default lazy)
-    title       caption shown under the iframe (optional; also used as the iframe title)
-    class       extra classes on the frame via class="..." or {.iframe .your-class}
-    align       horizontal position on the page (default center). left|center|right
-    valign      vertical alignment in a flex/grid parent (default center). top|center|bottom
+    url / src     required iframe source
+    zoom          scale of the inner page (default 100%). Accepts 75%, 0.75, or 75
+    width         visible viewport width (default 100%)
+    height        visible viewport height (default 560)
+    loading       iframe loading attr (default lazy)
+    title         caption shown under the iframe (optional; also used as the iframe title)
+    class         extra classes on the frame via class="..." or {.iframe .your-class}
+    align         horizontal position on the page (default center). left|center|right
+    valign        vertical alignment in a flex/grid parent (default center). top|center|bottom
+    new-window    show an open-in-new-window control (default true)
 ]]
 
 local DEFAULT_ZOOM = 1
 local DEFAULT_WIDTH = "100%"
 local DEFAULT_HEIGHT = "560px"
+
+local OPEN_WINDOW_SVG = table.concat({
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"',
+  ' stroke="currentColor" stroke-width="2" stroke-linecap="round"',
+  ' stroke-linejoin="round" aria-hidden="true" focusable="false">',
+  '<path d="M15 3h6v6"/>',
+  '<path d="M10 14 21 3"/>',
+  '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  "</svg>"
+})
 
 local css_injected = false
 
@@ -92,6 +103,20 @@ local function parse_valign(value)
   return "center"
 end
 
+local function parse_bool(value, default)
+  local raw = stringify(value):lower():gsub("%s+", "")
+  if raw == "" then
+    return default
+  end
+  if raw == "false" or raw == "0" or raw == "no" or raw == "off" then
+    return false
+  end
+  if raw == "true" or raw == "1" or raw == "yes" or raw == "on" then
+    return true
+  end
+  return default
+end
+
 local function css_size(value, default)
   local raw = stringify(value):gsub("%s+", "")
   if raw == "" then
@@ -129,7 +154,7 @@ local function ensure_css()
   end
   quarto.doc.add_html_dependency({
     name = "iframe",
-    version = "1.0.0",
+    version = "1.1.0",
     stylesheets = { "iframe.css" }
   })
   css_injected = true
@@ -161,6 +186,7 @@ function Div(div)
     loading = "lazy"
   end
   local title = stringify(div.attributes["title"])
+  local new_window = parse_bool(div.attributes["new-window"], true)
 
   local extra = {}
   for _, class in ipairs(div.classes) do
@@ -196,6 +222,25 @@ function Div(div)
   wrapper_class = wrapper_class
     .. " iframe-embed--align-" .. align
     .. " iframe-embed--valign-" .. valign
+  if new_window then
+    wrapper_class = wrapper_class .. " iframe-embed--new-window"
+  end
+
+  local open_link = ""
+  if new_window then
+    local open_label = title ~= ""
+      and ("Open " .. title .. " in a new window")
+      or "Open in a new window"
+    open_link = string.format(
+      '    <a class="iframe-embed__open" href="%s" target="_blank" rel="noopener noreferrer" title="%s" aria-label="%s">\n'
+        .. "      %s\n"
+        .. "    </a>\n",
+      escape_attr(url),
+      escape_attr(open_label),
+      escape_attr(open_label),
+      OPEN_WINDOW_SVG
+    )
+  end
 
   local html = string.format(
     '<%s%s class="%s" style="--iframe-zoom: %s; --iframe-width: %s; --iframe-height: %s;">\n'
@@ -203,6 +248,7 @@ function Div(div)
       .. '    <div class="iframe-embed__frame">\n'
       .. '      <iframe src="%s"%s loading="%s"></iframe>\n'
       .. "    </div>\n"
+      .. "%s"
       .. "  </div>\n"
       .. "%s"
       .. "</%s>",
@@ -216,6 +262,7 @@ function Div(div)
     escape_attr(url),
     title_attr,
     escape_attr(loading),
+    open_link,
     caption,
     tag
   )
