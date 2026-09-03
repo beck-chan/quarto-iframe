@@ -65,3 +65,7 @@ Hide the open-in-new-window control:
 | `loading` | `lazy` | Iframe `loading` attribute |
 | `new-window` | `true` | SVG control in the bottom-left that opens the iframe URL in a new window. Set `false` / `off` / `no` to hide it |
 | `class` | — | Add style classes with `class="..."` or `.custom-class` |
+
+## Support
+
+> If you liked this extension and found it useful, please consider donating via Ko-fi: [https://ko-fi.com/beckchan](https://ko-fi.com/beckchan)
